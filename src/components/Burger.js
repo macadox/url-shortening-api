@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const Burger = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+const Burger = ({toggleNav}) => {
+  return (
+    <button className='burger' onClick={toggleNav}>
+      <div className='burger__bar'></div>
+    </button>
+  );
+};
 
-export default Burger
+export default Burger;

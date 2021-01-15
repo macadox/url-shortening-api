@@ -1,7 +1,7 @@
 import React from "react";
 
-const NavItem = ({children}) => {
-  return <li>{children}</li>;
+const NavItem = ({ children, ...props }) => {
+  return <li {...props}>{children}</li>;
 };
 
 export default NavItem;
