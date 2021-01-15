@@ -87,29 +87,29 @@ const App = () => {
         <nav className={`navbar ${menuOpen ? "navbar--open" : ""}`}>
           <Menu className='menu'>
             <MenuItem className='menu__item'>
-              <a href='' className='btn btn--menu'>
+              <a href='#' className='btn btn--menu'>
                 Features
               </a>
             </MenuItem>
             <MenuItem className='menu__item'>
-              <a href='' className='btn btn--menu'>
+              <a href='#' className='btn btn--menu'>
                 Pricing
               </a>
             </MenuItem>
             <MenuItem className='menu__item'>
-              <a href='' className='btn btn--menu'>
+              <a href='#' className='btn btn--menu'>
                 Resources
               </a>
             </MenuItem>
             <div className='fancy-line'></div>
             <MenuItem className='menu__item'>
-              <a href='' className='btn btn--menu'>
+              <a href='#' className='btn btn--menu'>
                 Login
               </a>
             </MenuItem>
             <MenuItem className='menu__item'>
               <a
-                href=''
+                href='#'
                 className='btn btn--cyan btn--menu btn--round btn--animate'
               >
                 Sign Up
