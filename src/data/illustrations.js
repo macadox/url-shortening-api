@@ -5,7 +5,7 @@ import boostMobile from "../images/bg-boost-mobile.svg";
 import shortenDesktop from "../images/bg-shorten-desktop.svg";
 import boostDesktop from "../images/bg-boost-desktop.svg";
 
-export default {
+export const illustrations = {
   logo,
   hero,
   shortenMobile,

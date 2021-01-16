@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import axios from "axios";
 
 import { reducer } from "./reducer";
@@ -23,7 +23,7 @@ import Card from "./Card";
 import Footer from "./Footer";
 
 // SVG's
-import illustrations from '../data/illustrations'
+import {illustrations} from '../data/illustrations'
 
 // Data
 import { cards, footer, socials } from "../data/data";
