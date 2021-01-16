@@ -1,6 +1,8 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
+
+import { reducer } from "./reducer";
 
 import AppLogo from "./AppLogo";
 import Burger from "./Burger";
@@ -21,40 +23,23 @@ import Card from "./Card";
 import Footer from "./Footer";
 
 // SVG's
-import logo from "../images/logo.svg";
-import hero from "../images/illustration-working.svg";
-import shortenMobile from "../images/bg-shorten-mobile.svg";
-import boostMobile from "../images/bg-boost-mobile.svg";
-import shortenDesktop from "../images/bg-shorten-desktop.svg";
-import boostDesktop from "../images/bg-boost-desktop.svg";
+import illustrations from '../data/illustrations'
 
 // Data
 import { cards, footer, socials } from "../data/data";
 
 const API_URL = `https://api.shrtco.de/v2/shorten?url=`;
 
+const initialState = {
+  shortenedURLs: JSON.parse(localStorage.getItem("shortenedURLs")) || [],
+  copiedLinkIndex: null,
+  menuOpen: false,
+};
+
 const App = () => {
   const [term, setTerm] = useState("");
-  const [shortenedURLs, setShortenedURLs] = useState([]);
-  const [copiedLinkIndex, setCopiedLinkIndex] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
-
+  const [state, dispatch] = useReducer(reducer, initialState);
   const isMobile = window.screen.width < 768;
-
-  useEffect(() => {
-    const lsData = JSON.parse(localStorage.getItem("shortenedURLs"));
-
-    if (!lsData) {
-      setShortenedURLs([]);
-    } else {
-      setShortenedURLs(lsData);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (shortenedURLs.length > 0)
-      localStorage.setItem("shortenedURLs", JSON.stringify(shortenedURLs));
-  }, [shortenedURLs]);
 
   const shorten = async (e) => {
     e.preventDefault();
@@ -68,23 +53,34 @@ const App = () => {
         output: result.full_short_link,
       };
       setTerm("");
-      setShortenedURLs(shortenedURLs.concat(shortenedURL));
+      dispatch({
+        type: "SHORTEN_LINK",
+        payload: [...state.shortenedURLs, shortenedURL],
+      });
     } catch (error) {
       console.error(error);
     }
   };
 
   const copy = (index) => {
-    navigator.clipboard.writeText(shortenedURLs[index].output);
-    setCopiedLinkIndex(index);
+    navigator.clipboard.writeText(state.shortenedURLs[index].output);
+    dispatch({ type: "SET_COPY_INDEX", payload: index });
   };
 
   return (
     <div className='app'>
       <header>
-        <AppLogo logo={logo} />
-        <Burger toggleNav={() => setMenuOpen(!menuOpen)} />
-        <nav className={`navbar ${menuOpen ? "navbar--open" : ""}`}>
+        <AppLogo logo={illustrations.logo} />
+
+        <Burger
+          toggleNav={() =>
+            dispatch({ type: "TOGGLE_MENU", payload: !state.menuOpen })
+          }
+        />
+
+        <nav
+          className={`navbar {/* ${state.menuOpen ? "navbar--open" : ""} */}`}
+        >
           <Menu className='menu'>
             <MenuItem className='menu__item'>
               <a href='/' className='btn btn--menu'>
@@ -120,7 +116,7 @@ const App = () => {
       </header>
       <section className='hero'>
         <div className='hero__img-container'>
-          <img src={hero} className='hero__img' alt='' />
+          <img src={illustrations.hero} className='hero__img' alt='' />
         </div>
         <div className='hero__content'>
           <h1 className='hero__title'>More than just shorter links</h1>
@@ -140,7 +136,7 @@ const App = () => {
             className='shortener__form'
             style={{
               backgroundImage: `url("${
-                isMobile ? shortenMobile : shortenDesktop
+                isMobile ? illustrations.shortenMobile : illustrations.shortenDesktop
               }")`,
             }}
           >
@@ -153,8 +149,8 @@ const App = () => {
             <URLShortenerSubmit className='shortener__submit btn btn--cyan btn--square' />
           </URLShortener>
           <URLShortenerOutput className='shortener__output-container'>
-            {shortenedURLs.map((url, index) => {
-              const isCopied = copiedLinkIndex === index;
+            {state.shortenedURLs.map((url, index) => {
+              const isCopied = state.copiedLinkIndex === index;
 
               return (
                 <div key={url.id} className='shortener__output'>
@@ -196,7 +192,7 @@ const App = () => {
         <div
           className='boost-wrapper'
           style={{
-            backgroundImage: `url("${isMobile ? boostMobile : boostDesktop}")`,
+            backgroundImage: `url("${isMobile ? illustrations.boostMobile : illustrations.boostDesktop}")`,
           }}
         >
           <h2>Boost your links today</h2>
@@ -205,7 +201,7 @@ const App = () => {
           </button>
         </div>
       </section>
-      <Footer links={footer} socials={socials} logo={logo} />
+      <Footer links={footer} socials={socials} logo={illustrations.logo} />
     </div>
   );
 };

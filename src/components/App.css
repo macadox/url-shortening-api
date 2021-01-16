@@ -307,7 +307,7 @@ header {
 
   .hero__subtitle {
     text-align: left;
-    padding: 0;
+    padding: 1em 0 1.5em;
   }
 
   .hero__title {
