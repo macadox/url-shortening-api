@@ -1,6 +1,7 @@
 # Shortly URL shortening API
 
 Shortly is a URL Shortening App. Created in React, implemented Component Composition.
+All of the links created are stored in localStorage.
 
 ## Demo
 Demo accessible at:
